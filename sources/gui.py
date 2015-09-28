@@ -1,2 +1,10 @@
 __author__ = 'Iki'
-print "GUI"
+
+from Tkinter import *
+
+fenetre = Tk()
+
+label = Label(fenetre, text="TO52")
+label.pack()
+
+fenetre.mainloop()
