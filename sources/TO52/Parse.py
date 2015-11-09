@@ -1,11 +1,8 @@
-from pdfminer import *
-from pdfminer.pdfparser import PDFParser
-from pdfminer.pdfdocument import PDFDocument
+from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
+from pdfminer.converter import TextConverter
+from pdfminer.layout import LAParams
 from pdfminer.pdfpage import PDFPage
-from pdfminer.pdfpage import PDFTextExtractionNotAllowed
-from pdfminer.pdfinterp import PDFResourceManager
-from pdfminer.pdfinterp import PDFPageInterpreter
-from pdfminer.pdfdevice import PDFDevice
+from cStringIO import StringIO
 import time
 
 __author__ = 'Iki'
@@ -21,24 +18,27 @@ class Parse:
 
         t0 = time.clock()
 
-        # Open a PDF file.
-        fp = open(path, 'rb')
-        # Create a PDF parser object associated with the file object.
-        parser = PDFParser(fp)
-        # Create a PDF document object that stores the document structure.
-        # Supply the password for initialization.
-        document = PDFDocument(parser)
-        # Check if the document allows text extraction. If not, abort.
-        if not document.is_extractable:
-            raise PDFTextExtractionNotAllowed
-        # Create a PDF resource manager object that stores shared resources.
         rsrcmgr = PDFResourceManager()
-        # Create a PDF device object.
-        device = PDFDevice(rsrcmgr)
-        # Create a PDF interpreter object.
+        retstr = StringIO()
+        codec = 'utf-8'
+        laparams = LAParams()
+        device = TextConverter(rsrcmgr, retstr, codec=codec, laparams=laparams)
+        fp = file(path, 'rb')
         interpreter = PDFPageInterpreter(rsrcmgr, device)
-        # Process each page contained in the document.
-        for page in PDFPage.create_pages(document):
+        password = ""
+        maxpages = 0
+        caching = True
+        pagenos=set()
+
+        for page in PDFPage.get_pages(fp, pagenos, maxpages=maxpages, password=password,caching=caching, check_extractable=True):
             interpreter.process_page(page)
 
+        text = retstr.getvalue()
+
+        fp.close()
+        device.close()
+        retstr.close()
+
         print "Parsing in:",time.clock() - t0
+        print text
+        return text
