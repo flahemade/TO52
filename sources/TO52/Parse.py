@@ -35,9 +35,11 @@ class Parse:
         i = 0
         for page in PDFPage.get_pages(fp, pagenos, maxpages=maxpages, password=password,caching=caching, check_extractable=True):
             page_tmp = Page()
+            retstr.reset()
             interpreter.process_page(page)
             page_tmp.text = retstr.getvalue()
             book.pages.append(page_tmp)
+
 
         fp.close()
         device.close()

@@ -11,14 +11,58 @@ class CsvMod :
     def __init__(self):
         print("New CsvMod")
 
-    def buildCsv(self,nbPages):
+    def buildCsv(self,nbPages,dico):
         c = csv.writer(open("MONFICHIER.csv", "wb"))
         entete  = list()
         entete.append("")
-        for i in range(0,nbPages):
+        entete.append("")
+        for i in range(1,nbPages+1):
             entete.append(i.__str__())
         c.writerow(entete)
 
+        for element in dico.keys():
+            tmp=dico[element]
+            previousAppearancePage=0
 
-pouet = CsvMod()
-pouet.buildCsv(32)
+            #Reset currentLine
+            currentLine=list()
+            currentLine.append('')
+            currentLine.append(element)
+
+            currentWeight=1
+            #Setting weight to 0
+
+
+
+            print(element.__str__()+" : "+tmp.__str__())
+            count=1
+
+            for i in range(0,tmp.__len__()):
+                entry=tmp[i]
+                while(entry>count):
+                    currentLine.append(0)
+                    count+=1
+                if(entry>previousAppearancePage):
+                    #Next entry is after previous Appearance
+                    previousAppearancePage=entry
+                    #Reseting the weight
+                    currentWeight=1
+                elif(entry==previousAppearancePage):
+                    #Same page than previous. Incrementing weight
+                    currentWeight+=1
+                elif(entry<previousAppearancePage):
+                    #putting 0
+                    currentLine.append(0)
+                    previousAppearancePage+=1
+                else:
+                    print("Exception")
+                if(i+1==tmp.__len__()):
+                    currentLine.append(currentWeight)
+                else:
+                    if(tmp[i+1]>entry):
+                        count+=1
+                        currentLine.append(currentWeight)
+                        currentWeight=1
+
+
+            c.writerow(currentLine)

@@ -1,6 +1,7 @@
 from TO52.Parse import Parse
 from TO52.Book import Book
 from TO52.Perso import Perso
+from TO52.CsvMod import CsvMod
 
 __author__ = 'Iki'
 
@@ -35,7 +36,9 @@ class Analyse:
                         Analyse.perso[word] = [i]
                     else:
                         Analyse.perso.get(word).append(i)
-        print Analyse.perso.keys()
+        c = CsvMod()
+        c.buildCsv(book.pages.__len__(),Analyse.perso)
+
 
 
 
