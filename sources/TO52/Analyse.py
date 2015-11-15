@@ -29,12 +29,12 @@ class Analyse:
             words = text.split()
             for word in words:
                 if ((ord(word[0])>=65) and (ord(word[0])<=90)):
+                    if((ord(word[-1])>=33 and ord(word[-1])<=64)):
+                        word = word[0:-1]
                     if word not in Analyse.perso.keys():
                         Analyse.perso[word] = [i]
                     else:
                         Analyse.perso.get(word).append(i)
-
-
         print Analyse.perso.keys()
 
 
