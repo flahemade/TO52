@@ -55,9 +55,12 @@ class CsvMod :
                     currentLine.append(0)
                     previousAppearancePage+=1
                 else:
-                    print("Exception")
+                    print("Non tackled Exception")
                 if(i+1==tmp.__len__()):
+                    #Last appearance of entity
                     currentLine.append(currentWeight)
+                    for j in range(0,nbPages-count):
+                        currentLine.append(0)
                 else:
                     if(tmp[i+1]>entry):
                         count+=1
