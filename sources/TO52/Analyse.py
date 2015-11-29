@@ -19,7 +19,7 @@ class Analyse:
 
     @staticmethod
     def run(path):
-
+        perso_tmp = {}
         print("Analyse : Calling parser")
         p = Parse()
         book = p.run(path)
@@ -35,24 +35,43 @@ class Analyse:
                     if len(sword)>0:
                         if ((ord(sword[0])>=65) and (ord(sword[0])<=90)):
                             sword = sword.upper()
+                            if sword == 'Quant':
+                                print previous_word
                             if((ord(sword[-1])>=33 and ord(sword[-1])<=64)):
                                     sword = sword[0:-1]
 
                             if not Analyse.not_perso.__contains__(sword):
                                 if sword not in Analyse.perso.keys():
-                                    Analyse.perso[sword] = [i]
+                                    if sword in perso_tmp.keys():
+                                        perso_tmp.get(sword).append(i)
+                                        if (not previous_word[-1] == '.') and (not previous_word[-1] == '?') and (not previous_word[-1] == '!'):
+                                            Analyse.perso[sword] = perso_tmp.get(sword)
+                                            del perso_tmp[sword]
+                                    else:
+                                        if (not previous_word[-1] == '.') and (not previous_word[-1] == '?') and (not previous_word[-1] == '!'):
+                                            Analyse.perso[sword] = [i]
+                                        else:
+                                            perso_tmp[sword] = [i]
                                 else:
-
                                     Analyse.perso.get(sword).append(i)
                         else:
-                            test = sword.upper()
-                            if(Analyse.perso.has_key(test)):
-                                del Analyse.perso[test]
-                                Analyse.not_perso.append(test)
+                            sword = sword.upper()
+                            if(Analyse.perso.has_key(sword)):
+                                del Analyse.perso[sword]
+                                Analyse.not_perso.append(sword)
+                            if(perso_tmp.has_key(sword)):
+                                del perso_tmp[sword]
+                                Analyse.not_perso.append(sword)
+                previous_word = word
             ##print Analyse.perso.keys()
+        for index in Analyse.perso.keys():
+            occurence = Analyse.perso.get(index)
+            if len(occurence) == 1:
+                del Analyse.perso[index]
+                Analyse.not_perso.append(index)
+
         c = CsvMod()
         c.buildCsv(book.pages.__len__(),Analyse.perso)
-        print Analyse.not_perso
 
 
 

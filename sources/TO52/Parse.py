@@ -22,7 +22,7 @@ class Parse:
 
         rsrcmgr = PDFResourceManager()
         retstr = StringIO()
-        codec = 'iso-8859-1'
+        codec = 'ISO-8859-1'
         laparams = LAParams()
         device = TextConverter(rsrcmgr, retstr, codec=codec, laparams=laparams)
         fp = file(path, 'rb')
@@ -45,4 +45,5 @@ class Parse:
         device.close()
         retstr.close()
         print "Parsing in:",time.clock() - t0
+        print book.pages[0].text
         return book
