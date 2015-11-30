@@ -31,6 +31,8 @@ class Analyse:
             if i == 78:
                 print text
             words = text.split()
+            words = words[0:-1]
+            previous_word = " "
             for word in words:
                 word = word.replace("'","-")
                 sub_word = word.split('-')

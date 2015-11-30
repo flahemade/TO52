@@ -39,11 +39,9 @@ class Parse:
             begin_page = len(retstr.getvalue())
             interpreter.process_page(page)
             page_tmp.text = retstr.getvalue()[begin_page:-1]
-            print page_tmp.text
             book.pages.append(page_tmp)
         fp.close()
         device.close()
         retstr.close()
         print "Parsing in:",time.clock() - t0
-        print book.pages[0].text
         return book
