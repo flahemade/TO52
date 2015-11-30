@@ -27,6 +27,9 @@ class Analyse:
         for page in book.pages:
             i = i + 1
             text = page.text
+
+            if i == 78:
+                print text
             words = text.split()
             for word in words:
                 word = word.replace("'","-")
@@ -35,8 +38,9 @@ class Analyse:
                     if len(sword)>0:
                         if ((ord(sword[0])>=65) and (ord(sword[0])<=90)):
                             sword = sword.upper()
-                            if sword == 'Quant':
+                            if i == 78 or i == 79:
                                 print previous_word
+                                print sword
                             if((ord(sword[-1])>=33 and ord(sword[-1])<=64)):
                                     sword = sword[0:-1]
 
@@ -44,11 +48,11 @@ class Analyse:
                                 if sword not in Analyse.perso.keys():
                                     if sword in perso_tmp.keys():
                                         perso_tmp.get(sword).append(i)
-                                        if (not previous_word[-1] == '.') and (not previous_word[-1] == '?') and (not previous_word[-1] == '!'):
+                                        if (not previous_word[-1] == '.') and (not previous_word[-1] == '?') and (not previous_word[-1] == '!') and (not previous_word[-1] == '-') and (not previous_word[-1] == '"'):
                                             Analyse.perso[sword] = perso_tmp.get(sword)
                                             del perso_tmp[sword]
                                     else:
-                                        if (not previous_word[-1] == '.') and (not previous_word[-1] == '?') and (not previous_word[-1] == '!'):
+                                        if (not previous_word[-1] == '.') and (not previous_word[-1] == '?') and (not previous_word[-1] == '!') and (not previous_word[-1] == '-') and (not previous_word[-1] == '"'):
                                             Analyse.perso[sword] = [i]
                                         else:
                                             perso_tmp[sword] = [i]
