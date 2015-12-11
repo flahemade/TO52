@@ -39,7 +39,11 @@ class Analyse:
                 for sword in sub_word:
                     if len(sword)>0:
                         if ((ord(sword[0])>=65) and (ord(sword[0])<=90)):
+<<<<<<< HEAD
                             sword.lower()
+=======
+                           
+>>>>>>> parent of 57d3831... Changed upper to lower. Added UTF-8 encoding
                             if i == 78 or i == 79:
                                 print previous_word
                                 print sword
