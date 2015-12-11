@@ -22,7 +22,7 @@ class Parse:
 
         rsrcmgr = PDFResourceManager()
         retstr = StringIO()
-        codec = 'ISO-8859-1'
+        codec = 'UTF-8'
         laparams = LAParams()
         device = TextConverter(rsrcmgr, retstr, codec=codec, laparams=laparams)
         fp = file(path, 'rb')
