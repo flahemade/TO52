@@ -40,7 +40,11 @@ class Analyse:
                     if len(sword)>0:
                         if ((ord(sword[0])>=65) and (ord(sword[0])<=90)):
 <<<<<<< HEAD
+<<<<<<< HEAD
                             sword.lower()
+=======
+                           
+>>>>>>> parent of 57d3831... Changed upper to lower. Added UTF-8 encoding
 =======
                            
 >>>>>>> parent of 57d3831... Changed upper to lower. Added UTF-8 encoding
