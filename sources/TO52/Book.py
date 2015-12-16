@@ -1,3 +1,4 @@
+# coding: utf8
 from TO52.Page import Page
 
 class Book:

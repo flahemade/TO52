@@ -1,3 +1,4 @@
+# coding: utf8
 from TO52.Parse import Parse
 from TO52.Book import Book
 from TO52.Perso import Perso
@@ -25,7 +26,7 @@ class Analyse:
         book = p.run(path)
         i = 0
         for page in book.pages:
-            i = i + 1
+            i += 1
             text = page.text
 
             if i == 78:
@@ -39,11 +40,11 @@ class Analyse:
                 for sword in sub_word:
                     if len(sword)>0:
                         if ((ord(sword[0])>=65) and (ord(sword[0])<=90)):
-                            sword = sword.upper()
+                            sword.lower()
                             if i == 78 or i == 79:
                                 print previous_word
                                 print sword
-                            if((ord(sword[-1])>=33 and ord(sword[-1])<=64)):
+                            if 33 <= ord(sword[-1]) <= 64:
                                     sword = sword[0:-1]
 
                             if not Analyse.not_perso.__contains__(sword):
@@ -65,11 +66,11 @@ class Analyse:
                             if(Analyse.perso.has_key(sword)):
                                 del Analyse.perso[sword]
                                 Analyse.not_perso.append(sword)
-                            if(perso_tmp.has_key(sword)):
+                            if perso_tmp.has_key(sword):
                                 del perso_tmp[sword]
                                 Analyse.not_perso.append(sword)
                 previous_word = word
-            ##print Analyse.perso.keys()
+            # print Analyse.perso.keys()
         for index in Analyse.perso.keys():
             occurence = Analyse.perso.get(index)
             if len(occurence) == 1:
