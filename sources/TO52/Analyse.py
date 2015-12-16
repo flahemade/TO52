@@ -78,7 +78,3 @@ class Analyse:
 
         c = CsvMod()
         c.buildCsv(book.pages.__len__(),Analyse.perso)
-
-
-
-
