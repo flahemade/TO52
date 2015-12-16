@@ -1,3 +1,4 @@
+# coding: utf8
 from TO52.Parse import Parse
 from TO52.Book import Book
 from TO52.Perso import Perso

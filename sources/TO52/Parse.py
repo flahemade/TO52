@@ -1,3 +1,4 @@
+# coding: utf8
 from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
@@ -16,13 +17,13 @@ class Parse:
 
     @staticmethod
     def run(path):
-        print "Calling parser :%s" %path
+        print "Calling parser :%s" % path
 
         t0 = time.clock()
 
         rsrcmgr = PDFResourceManager()
         retstr = StringIO()
-        codec = 'UTF-8'
+        codec = 'utf-8'
         laparams = LAParams()
         device = TextConverter(rsrcmgr, retstr, codec=codec, laparams=laparams)
         fp = file(path, 'rb')
@@ -30,12 +31,12 @@ class Parse:
         password = ""
         maxpages = 0
         caching = True
-        pagenos=set()
+        pagenos = set()
         book = Book()
         i = 0
-        for page in PDFPage.get_pages(fp, pagenos, maxpages=maxpages, password=password,caching=caching, check_extractable=True):
+        for page in PDFPage.get_pages(fp, pagenos, maxpages=maxpages, password=password, caching=caching,
+                                      check_extractable=True):
             page_tmp = Page()
-            #retstr.reset()
             begin_page = len(retstr.getvalue())
             interpreter.process_page(page)
             page_tmp.text = retstr.getvalue()[begin_page:-1]
@@ -43,5 +44,5 @@ class Parse:
         fp.close()
         device.close()
         retstr.close()
-        print "Parsing in:",time.clock() - t0
+        print "Parsing in:", time.clock() - t0
         return book
