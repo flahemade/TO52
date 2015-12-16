@@ -9,10 +9,12 @@ __author__ = 'Iki'
 
 
 class Gui:
+
     window = 0
     button_import = Button(window, text="Import")
     button_analyse = Button(window, text="Analyse")
     button_eval = Button(window,text="Evaluate")
+
 
     def __init__(self):
         print("Gui starting")
@@ -53,3 +55,4 @@ class Gui:
                 if(row[1]!=""):
                     Gui.toEval.append(row[1])
             print Gui.toEval
+
