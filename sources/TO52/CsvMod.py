@@ -1,3 +1,4 @@
+# coding: utf8
 import csv;
 
 
@@ -17,7 +18,9 @@ class CsvMod :
         entete.append("")
         entete.append("")
         for i in range(1,nbPages+1):
-            entete.append(i.__str__())
+            string = i.__str__()
+            string.encode('utf-8')
+            entete.append(string)
         c.writerow(entete)
 
         for element in dico.keys():
