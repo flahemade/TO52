@@ -2,7 +2,6 @@
 class Perso:
 
     name = []
-    occur = []
 
-    def __init__(name):
-        name = name
+    def __init__(self,n):
+        Perso.name = n
