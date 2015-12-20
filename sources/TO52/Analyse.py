@@ -11,7 +11,8 @@ class Analyse:
     not_perso = []
     perso = {}
     def __init__(self):
-        print("Analyse")
+        not_perso = []
+        perso = {}
 
     @staticmethod
     def printout():
@@ -36,12 +37,10 @@ class Analyse:
                 sub_word = word.split('-')
                 for sword in sub_word:
                     if len(sword)>1:
+                        sword = Analyse.replace_spec(Analyse(),sword)
                         if ((ord(sword[0])>=65) and (ord(sword[0])<=90)):
-                            sword = sword.replace("É","é")
-                            sword = sword.replace("È","è")
-                            sword = sword.replace("À","à")
                             sword = sword.lower()
-                            while(not ((65<=ord(sword[-1])<=90) or (97<=ord(sword[-1])<=122) or (sword[-2:]=='é'))):
+                            while(not ((65<=ord(sword[-1])<=90) or (97<=ord(sword[-1])<=122))):
                                 sword = sword[0:-1]
                             if len(sword)>1:
                                 if not Analyse.not_perso.__contains__(sword):
@@ -77,3 +76,22 @@ class Analyse:
         print len(Analyse.not_perso)
         c = CsvMod()
         c.buildCsv(book.pages.__len__(),Analyse.perso)
+
+    def replace_spec(self,word):
+        spec = {'a': "À Á Â à á â",
+        'ae' : "Æ æ",
+        'c' : "Ç ç",
+        'e' : "È É Ê Ë è é ê ë",
+        'i' : "Ì Í Î Ï ì í î ï",
+        'n' : "Ñ ñ",
+        'o' : "Ò Ó Ô ò ó ô",
+        'oe' : "Œ œ",
+        'u' : "Ù Ú Û Ü ù ú û ü",
+        'y' : "Ý Ÿ ý ÿ"}
+
+        for key in spec.keys():
+            chars = spec.get(key).split()
+            for char in chars:
+                word = word.replace(char,key)
+
+        return word
