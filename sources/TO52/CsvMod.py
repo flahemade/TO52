@@ -26,11 +26,10 @@ class CsvMod :
         for element in dico.keys():
             tmp=dico[element]
             previousAppearancePage=0
-
             #Reset currentLine
             currentLine=list()
             currentLine.append('')
-            currentLine.append(element)
+            currentLine.append(element.name)
 
             currentWeight=1
             #Setting weight to 0
