@@ -70,5 +70,4 @@ class CsvMod :
                         currentLine.append(currentWeight)
                         currentWeight=1
 
-
             c.writerow(currentLine)
