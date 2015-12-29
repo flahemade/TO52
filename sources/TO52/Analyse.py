@@ -80,8 +80,10 @@ class Analyse:
                                         if test_stop==0:
                                             if (not previous_word[-1] == '.') and (not previous_word[-1] == '?') and (not previous_word[-1] == '!') and (not previous_word[-3:] == '—') and (not previous_word[-3:] == '«') and (not previous_word[-3:] == '…') and (not previous_word[-1] == ':'):
                                                 Analyse.perso[deepcopy(pers2)] = [i]
+                                                test_stop = 1
                                             else:
                                                 perso_tmp[deepcopy(pers2)] = [i]
+                                                test_stop = 1
                                     pers2.name = []
                                 if test_stop==0:
                                     for pers in analyse_keys:
@@ -174,16 +176,26 @@ class Analyse:
         c.buildCsv(book.pages.__len__(),Analyse.perso)
 
     def replace_spec(self,word):
-        spec = {'a': "À Á Â à á â",
-        'ae' : "Æ æ",
-        'c' : "Ç ç",
-        'e' : "È É Ê Ë è é ê ë",
-        'i' : "Ì Í Î Ï ì í î ï",
-        'n' : "Ñ ñ",
-        'o' : "Ò Ó Ô ò ó ô",
-        'oe' : "Œ œ",
-        'u' : "Ù Ú Û Ü ù ú û ü",
-        'y' : "Ý Ÿ ý ÿ"}
+        spec = { 'A' : "À Á Â",
+        'a' : "à á â",
+        'Ae': "Æ",
+        'ae' : "æ",
+        'C' : "Ç",
+        'c' : "ç",
+        'E' : "È É Ê Ë",
+        'e' : "è é ê ë",
+        'I' : "Ì Í Î Ï",
+        'i' : "ì í î ï",
+        'N' : "Ñ",
+        'n' : "ñ",
+        'O' : "Ò Ó Ô",
+        'o' : "ò ó ô",
+        'Oe' : "Œ",
+        'oe' : "œ",
+        'U' : "Ù Ú Û Ü",
+        'u' : "ù ú û ü",
+        'Y' : "Ý Ÿ",
+        'y' : "ý ÿ"}
 
         for key in spec.keys():
             chars = spec.get(key).split()
