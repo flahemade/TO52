@@ -142,13 +142,29 @@ class Analyse:
                                 del perso_tmp[pers]
                 previous_word = word
 
+
         for index in Analyse.perso.keys():
-            occurence = []
-            [occurence.append(item) for item in Analyse.perso.get(index) if item not in occurence]
-            if len(occurence) == 1:
-                del Analyse.perso[index]
-                if not (index in Analyse.not_perso):
-                    Analyse.not_perso.append(index)
+            name = index.name[0].split()
+            x = len(name)
+            if x>1:
+                j=0
+                for n in name:
+                    if n in Analyse.not_perso:
+                        del name[j]
+                        j=j-1
+                    j=j+1
+                if not x == len(name):
+                    name = ''.join(name)
+                    for index2 in Analyse.perso.keys():
+                        if name == index2.name[0]:
+                            print name
+                            true_perso = Analyse.perso.get(index)
+                            true_perso = Analyse.perso.get(index)+Analyse.perso.get(index2)
+                            true_perso.sort()
+                            del Analyse.perso[index]
+                            Analyse.perso[index2] = true_perso
+
+
 
         list = []
         for index in Analyse.perso.keys():
@@ -157,11 +173,14 @@ class Analyse:
             if not name == split:
                 list = list + split
         count = Counter(list)
+        print count
         for elem in count.keys():
             list_same_perso = []
             if count.get(elem) == 1:
                 for index in Analyse.perso.keys():
-                    name = ''.join(index.name)
+                    name = ' '.join(index.name)
+                    if elem == "tom":
+                        print name
                     if name == elem or elem in name.split():
                         list_same_perso.append(index)
             if len(list_same_perso) > 1:
@@ -169,9 +188,20 @@ class Analyse:
                 for i in range(1,len(list_same_perso)):
                     true_perso = (true_perso + Analyse.perso.get(list_same_perso[i]))
                     true_perso.sort()
-                    list_same_perso[0].name = list_same_perso[0].name + list_same_perso[i].name
+                    if len(list_same_perso[0].name[0])> len(list_same_perso[i].name[0]):
+                        list_same_perso[0].name = list_same_perso[0].name + list_same_perso[i].name
+                    else:
+                        list_same_perso[0].name = list_same_perso[i].name + list_same_perso[0].name
                     del Analyse.perso[list_same_perso[i]]
                 Analyse.perso[list_same_perso[0]] = true_perso
+
+        for index in Analyse.perso.keys():
+            occurence = []
+            [occurence.append(item) for item in Analyse.perso.get(index) if item not in occurence]
+            if len(occurence) == 1:
+                del Analyse.perso[index]
+                if not (index in Analyse.not_perso):
+                    Analyse.not_perso.append(index)
         c = CsvMod()
         c.buildCsv(book.pages.__len__(),Analyse.perso)
 
