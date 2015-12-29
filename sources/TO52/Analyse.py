@@ -36,11 +36,7 @@ class Analyse:
             words = words[0:-1]
             pers2 = Perso([])
             for word in words:
-                sword = word.split("’")
-                if len(sword)>1:
-                    sword = sword[1]
-                else:
-                    sword = sword[0]
+                sword = word
                 if len(sword)>1:
                     sword = Analyse.replace_spec(Analyse(),sword)
                     analyse_keys = Analyse.perso.keys()
@@ -67,7 +63,26 @@ class Analyse:
                                         else:
                                             pers2.name = [previous_word + " " + sword]
                                         test_stop = 1
-
+                                else:
+                                    if len(pers2.name)>0:
+                                        for pers in Analyse.perso.keys():
+                                            if pers2.name[0] == pers.name[0]:
+                                                Analyse.perso.get(pers).append(i)
+                                                test_stop = 1
+                                        if test_stop==0:
+                                            for pers in perso_tmp.keys():
+                                                if pers2.name[0] == pers.name[0]:
+                                                    test_stop = 1
+                                                    perso_tmp.get(pers).append(i)
+                                                    if (not previous_word[-1] == '.') and (not previous_word[-1] == '?') and (not previous_word[-1] == '!') and (not previous_word[-3:] == '—') and (not previous_word[-3:] == '«') and (not previous_word[-3:] == '…') and (not previous_word[-1] == ':'):
+                                                        Analyse.perso[pers] = perso_tmp.get(pers)
+                                                        del perso_tmp[pers]
+                                        if test_stop==0:
+                                            if (not previous_word[-1] == '.') and (not previous_word[-1] == '?') and (not previous_word[-1] == '!') and (not previous_word[-3:] == '—') and (not previous_word[-3:] == '«') and (not previous_word[-3:] == '…') and (not previous_word[-1] == ':'):
+                                                Analyse.perso[deepcopy(pers2)] = [i]
+                                            else:
+                                                perso_tmp[deepcopy(pers2)] = [i]
+                                    pers2.name = []
                                 if test_stop==0:
                                     for pers in analyse_keys:
                                         if sword in pers.name:
@@ -93,9 +108,6 @@ class Analyse:
                     else:
                         test_stop = 0
                         if len(pers2.name)>0:
-                            if pers2.name[0] == "andrew wiggin":
-                                print i
-                                print pers2.name
                             for pers in Analyse.perso.keys():
                                 if pers2.name[0] == pers.name[0]:
                                     Analyse.perso.get(pers).append(i)
