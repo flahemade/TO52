@@ -10,10 +10,12 @@ __author__ = 'Iki'
 
 class Gui:
 
-    window = 0
+    window = ''
     button_import = Button(window, text="Import")
     button_analyse = Button(window, text="Analyse")
     button_eval = Button(window,text="Evaluate")
+    secondColumn = StringVar(window)
+    firstColumn = StringVar(window)
 
 
     def __init__(self):
@@ -53,6 +55,30 @@ class Gui:
             Gui.toEval = list()
             for row in spamreader:
                 if(row[1]!=""):
-                    Gui.toEval.append(row[1])
-            print Gui.toEval
+                    tmp=row[1]
+                    tmp = re.sub("[[]", '', tmp)
+                    tmp = re.sub("[]]", '', tmp)
+                    tmp = re.sub("\"", '', tmp)
+                    tmp = re.sub("'", '', tmp)
+                    Gui.toEval.append(tmp)
+
+
+            Gui.firstColumn.set("First") # default value
+            first = apply(OptionMenu, (Gui.window, Gui.firstColumn) + tuple(Gui.toEval))
+            first.pack(side="left")
+
+
+            Gui.secondColumn.set("Second") # default value
+            second = apply(OptionMenu, (Gui.window, Gui.secondColumn) + tuple(Gui.toEval))
+            second.pack(side="right")
+
+            Gui.button_eval.config(text='Associate')
+            Gui.button_eval.unbind("<Button-1>")
+            Gui.button_eval.bind("<Button-1>", Gui.associate)
+
+    @staticmethod
+    def associate(e):
+        print("Associating \'"+Gui.firstColumn.get()+"\' and \'"+Gui.secondColumn.get()+"\'")
+        print("Yolo")
+
 
