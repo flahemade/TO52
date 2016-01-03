@@ -4,6 +4,7 @@ from TO52.Book import Book
 from TO52.Perso import Perso
 from TO52.CsvMod import CsvMod
 from copy import deepcopy
+from collections import Counter
 
 __author__ = 'Iki'
 
@@ -47,45 +48,43 @@ class Analyse:
                         if len(sword)>1:
                             test_stop = 0
                             if not Analyse.not_perso.__contains__(sword):
-                                # if (65<=ord(previous_word[0])<=90):
-                                #     previous_word = Analyse.replace_spec(Analyse(),previous_word)
-                                #     previous_word = previous_word.lower()
-                                #     while(not ((65<=ord(previous_word[-1])<=90) or (97<=ord(previous_word[-1])<=122))):
-                                #         previous_word = previous_word[0:-1]
-                                #     concat = previous_word +" "+ sword
-                                #     test_pers_final = 0
-                                #     test_pers_delete = 0
-                                #     new_name = []
-                                #     for pers in analyse_keys:
-                                #         if test_pers_final == 0:
-                                #             if previous_word in pers.name:
-                                #                 pers_final = deepcopy(pers)
-                                #                 Analyse.perso[pers].append(i)
-                                #                 pers_final.name.append([concat,concat.split()])
-                                #                 test_pers_final = 1
-                                #         if test_pers_delete == 0:
-                                #             if sword in pers.name:
-                                #                 pers_delete = deepcopy(pers)
-                                #                 l = Analyse.perso.get(pers)
-                                #                 new_name = pers_delete.name
-                                #                 del Analyse.perso[pers]
-                                #                 test_pers_delete = 1
-                                #     for pers in tmp_keys:
-                                #         if test_pers_final == 0:
-                                #             if previous_word in pers.name:
-                                #                 pers_final = deepcopy(pers)
-                                #                 perso_tmp[pers].append(i)
-                                #                 pers_final.name.append([concat,concat.split()])
-                                #                 test_pers_final = -1
-                                #         if test_pers_delete == 0:
-                                #             if sword in pers.name:
-                                #                 pers_delete = deepcopy(pers)
-                                #                 l = perso_tmp[pers]
-                                #                 new_name = pers_delete.name
-                                #                 del perso_tmp[pers]
-                                #                 test_pers_delete = -1
-                                #     pers_final.name.append(new_name)
-                                #     test_stop=1
+                                if(65<=ord(previous_word[0])<=90) and (not previous_word[-1] == '.') and \
+                                    (not previous_word[-1] == '?') and (not previous_word[-1] == '!') and \
+                                    (not previous_word[-3:] == '—') and (not previous_word[-3:] == '«') and \
+                                    (not previous_word[-3:] == '…') and (not previous_word[-1] == ':') and \
+                                    (not previous_word[-1] == ','):
+                                    previous_word = Analyse.replace_spec(Analyse(),previous_word)
+                                    previous_word = previous_word.lower()
+                                    while(not ((65<=ord(previous_word[-1])<=90) or (97<=ord(previous_word[-1])<=122))):
+                                        previous_word = previous_word[0:-1]
+                                    if not Analyse.not_perso.__contains__(previous_word):
+                                        if len(pers2.name) > 0:
+                                            pers2.name = [pers2.name[0] + " " + sword]
+                                        else:
+                                            pers2.name = [previous_word + " " + sword]
+                                        test_stop = 1
+                                else:
+                                    if len(pers2.name)>0:
+                                        for pers in Analyse.perso.keys():
+                                            if pers2.name[0] == pers.name[0]:
+                                                Analyse.perso.get(pers).append(i)
+                                                test_stop = 1
+                                        if test_stop==0:
+                                            for pers in perso_tmp.keys():
+                                                if pers2.name[0] == pers.name[0]:
+                                                    test_stop = 1
+                                                    perso_tmp.get(pers).append(i)
+                                                    if (not previous_word[-1] == '.') and (not previous_word[-1] == '?') and (not previous_word[-1] == '!') and (not previous_word[-3:] == '—') and (not previous_word[-3:] == '«') and (not previous_word[-3:] == '…') and (not previous_word[-1] == ':'):
+                                                        Analyse.perso[pers] = perso_tmp.get(pers)
+                                                        del perso_tmp[pers]
+                                        if test_stop==0:
+                                            if (not previous_word[-1] == '.') and (not previous_word[-1] == '?') and (not previous_word[-1] == '!') and (not previous_word[-3:] == '—') and (not previous_word[-3:] == '«') and (not previous_word[-3:] == '…') and (not previous_word[-1] == ':'):
+                                                Analyse.perso[deepcopy(pers2)] = [i]
+                                                test_stop = 1
+                                            else:
+                                                perso_tmp[deepcopy(pers2)] = [i]
+                                                test_stop = 1
+                                    pers2.name = []
                                 if test_stop==0:
                                     for pers in analyse_keys:
                                         if sword in pers.name:
@@ -106,7 +105,29 @@ class Analyse:
                                         Analyse.perso[deepcopy(pers2)] = [i]
                                     else:
                                         perso_tmp[deepcopy(pers2)] = [i]
+
+                                    pers2.name = []
                     else:
+                        test_stop = 0
+                        if len(pers2.name)>0:
+                            for pers in Analyse.perso.keys():
+                                if pers2.name[0] == pers.name[0]:
+                                    Analyse.perso.get(pers).append(i)
+                                    test_stop = 1
+                            if test_stop==0:
+                                for pers in perso_tmp.keys():
+                                    if pers2.name[0] == pers.name[0]:
+                                        test_stop = 1
+                                        perso_tmp.get(pers).append(i)
+                                        if (not previous_word[-1] == '.') and (not previous_word[-1] == '?') and (not previous_word[-1] == '!') and (not previous_word[-3:] == '—') and (not previous_word[-3:] == '«') and (not previous_word[-3:] == '…') and (not previous_word[-1] == ':'):
+                                            Analyse.perso[pers] = perso_tmp.get(pers)
+                                            del perso_tmp[pers]
+                            if test_stop==0:
+                                if (not previous_word[-1] == '.') and (not previous_word[-1] == '?') and (not previous_word[-1] == '!') and (not previous_word[-3:] == '—') and (not previous_word[-3:] == '«') and (not previous_word[-3:] == '…') and (not previous_word[-1] == ':'):
+                                    Analyse.perso[deepcopy(pers2)] = [i]
+                                else:
+                                    perso_tmp[deepcopy(pers2)] = [i]
+                        pers2.name = []
                         sword = sword.lower()
                         sword = Analyse.replace_spec(Analyse(),sword)
                         if not (sword in Analyse.not_perso):
@@ -120,6 +141,60 @@ class Analyse:
                                 Analyse.not_perso.append(pers.name)
                                 del perso_tmp[pers]
                 previous_word = word
+
+
+        for index in Analyse.perso.keys():
+            name = index.name[0].split()
+            x = len(name)
+            if x>1:
+                j=0
+                for n in name:
+                    if n in Analyse.not_perso:
+                        del name[j]
+                        j=j-1
+                    j=j+1
+                if not x == len(name):
+                    name = ''.join(name)
+                    for index2 in Analyse.perso.keys():
+                        if name == index2.name[0]:
+                            print name
+                            true_perso = Analyse.perso.get(index)
+                            true_perso = Analyse.perso.get(index)+Analyse.perso.get(index2)
+                            true_perso.sort()
+                            del Analyse.perso[index]
+                            Analyse.perso[index2] = true_perso
+
+
+
+        list = []
+        for index in Analyse.perso.keys():
+            name = index.name
+            split = name[0].split()
+            if not name == split:
+                list = list + split
+        count = Counter(list)
+        print count
+        for elem in count.keys():
+            list_same_perso = []
+            if count.get(elem) == 1:
+                for index in Analyse.perso.keys():
+                    name = ' '.join(index.name)
+                    if elem == "tom":
+                        print name
+                    if name == elem or elem in name.split():
+                        list_same_perso.append(index)
+            if len(list_same_perso) > 1:
+                true_perso = Analyse.perso.get(list_same_perso[0])
+                for i in range(1,len(list_same_perso)):
+                    true_perso = (true_perso + Analyse.perso.get(list_same_perso[i]))
+                    true_perso.sort()
+                    if len(list_same_perso[0].name[0])> len(list_same_perso[i].name[0]):
+                        list_same_perso[0].name = list_same_perso[0].name + list_same_perso[i].name
+                    else:
+                        list_same_perso[0].name = list_same_perso[i].name + list_same_perso[0].name
+                    del Analyse.perso[list_same_perso[i]]
+                Analyse.perso[list_same_perso[0]] = true_perso
+
         for index in Analyse.perso.keys():
             occurence = []
             [occurence.append(item) for item in Analyse.perso.get(index) if item not in occurence]
@@ -131,16 +206,26 @@ class Analyse:
         c.buildCsv(book.pages.__len__(),Analyse.perso)
 
     def replace_spec(self,word):
-        spec = {'a': "À Á Â à á â",
-        'ae' : "Æ æ",
-        'c' : "Ç ç",
-        'e' : "È É Ê Ë è é ê ë",
-        'i' : "Ì Í Î Ï ì í î ï",
-        'n' : "Ñ ñ",
-        'o' : "Ò Ó Ô ò ó ô",
-        'oe' : "Œ œ",
-        'u' : "Ù Ú Û Ü ù ú û ü",
-        'y' : "Ý Ÿ ý ÿ"}
+        spec = { 'A' : "À Á Â",
+        'a' : "à á â",
+        'Ae': "Æ",
+        'ae' : "æ",
+        'C' : "Ç",
+        'c' : "ç",
+        'E' : "È É Ê Ë",
+        'e' : "è é ê ë",
+        'I' : "Ì Í Î Ï",
+        'i' : "ì í î ï",
+        'N' : "Ñ",
+        'n' : "ñ",
+        'O' : "Ò Ó Ô",
+        'o' : "ò ó ô",
+        'Oe' : "Œ",
+        'oe' : "œ",
+        'U' : "Ù Ú Û Ü",
+        'u' : "ù ú û ü",
+        'Y' : "Ý Ÿ",
+        'y' : "ý ÿ"}
 
         for key in spec.keys():
             chars = spec.get(key).split()
